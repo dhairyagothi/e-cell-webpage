@@ -21,12 +21,12 @@ const EventSection = () => {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-900">
       {/* Heading */}
-      <h1 className="mb-6 text-6xl font-bold tracking-wide text-white uppercase">
+      <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide text-white uppercase">
         Events
       </h1>
 
       {/* Container */}
-      <div className="relative flex w-11/12 max-w-7xl bg-gray-800 shadow-lg rounded-xl overflow-hidden h-[500px]">
+      <div className="relative flex w-11/12 max-w-7xl bg-gray-800 shadow-lg rounded-xl overflow-hidden h-[400px] sm:h-[500px]">
         {/* Left Side: Background Image Section */}
         <div className="flex-[1.5] relative">
           <div
@@ -34,9 +34,9 @@ const EventSection = () => {
             style={{ backgroundImage: `url(${bgimage})` }}
           >
             <div className="absolute inset-0 bg-black/40"></div>
-            <div className="absolute inset-0 flex flex-col justify-center px-8 text-left">
-              <h2 className="mb-4 text-4xl font-semibold text-white">EVENT</h2>
-              <p className="text-sm leading-6 text-white">
+            <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 text-left">
+              <h2 className="mb-4 text-2xl sm:text-3xl lg:text-4xl font-semibold text-white">EVENT</h2>
+              <p className="text-xs sm:text-sm lg:text-base leading-6 text-white">
                 DJHDHGCNCVXNXXXXXXXXXXXXXXX<br />
                 NNNNNNNNNNNNNNNNNNNHFGDXHFCH<br />
                 GJ,BV,CGHMGXCBXMJHGFJHKFCJKGFJ<br />
@@ -47,7 +47,7 @@ const EventSection = () => {
         </div>
 
         {/* Right Side: Carousel Section */}
-        <div className="flex-[1] flex items-center justify-center ">
+        <div className="flex-[1] flex items-center justify-center">
           <div className="w-full h-full bg-white border border-gray-300 rounded-md">
             <Swiper
               modules={[Navigation, Pagination, Autoplay, EffectCreative]} // Added EffectCreative
@@ -66,7 +66,7 @@ const EventSection = () => {
                 shadow: true, // Enable shadow effect
                 limitProgress: 2, // Control the progress limit for animation
               }}
-              className="h-full w-[500px] md:w-[525px] lg:w-[550px] xl:w-[600px]"
+              className="h-full w-[100%] sm:w-[500px] md:w-[525px] lg:w-[550px] xl:w-[600px]"
             >
               {slides.map((slide) => (
                 <SwiperSlide key={slide.id}>
@@ -77,7 +77,7 @@ const EventSection = () => {
                       className="object-cover w-full h-full rounded-lg"
                     />
                     <div className="absolute text-white bottom-4 left-4">
-                      <h3 className="px-2 py-1 text-xl font-bold rounded bg-black/60">
+                      <h3 className="px-2 py-1 text-lg sm:text-xl font-bold rounded bg-black/60">
                         {slide.text}
                       </h3>
                     </div>
