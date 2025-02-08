@@ -1,95 +1,109 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, EffectCreative } from "swiper/modules"; // Added EffectCreative
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-creative"; // Import creative effect style
+'use client';
 
-import bgimage from "./assets/bg.png";
-import slideImage1 from "./assets/slide1.png"; // Replace with actual image paths
-import slideImage2 from "./assets/slide2.png"; // Replace with actual image paths
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const EventSection = () => {
-  const slides = [
-    { id: 1, image: slideImage1, text: "E cell event 1 " },
-    { id: 2, image: slideImage2, text: "E cell event 2 " },
-    { id: 8, image: slideImage1, text: "E cell event 3 " },
-    { id: 9, image: slideImage2, text: "E cell event 4 " },
-  ];
+// Define items array directly in the same file
+const items = [
+  { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { id: 2, url: "https://images.unsplash.com/photo-1522158637959-30385a09e0da?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { id: 3, url: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { id: 4, url: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?q=80&w=1924&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { id: 5, url: "https://plus.unsplash.com/premium_photo-1679547202671-f9dbbf466db4?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+];
+
+function FramerCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [width, setWidth] = useState(0);
+  const carousel = useRef(null);
+
+  // Auto-slide every 3 seconds for infinite loop
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % items.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Update scroll width
+  useEffect(() => {
+    if (carousel.current) {
+      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+    }
+  }, []);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-900">
-      {/* Heading */}
-      <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide text-white uppercase">
-        Events
-      </h1>
-
-      {/* Container */}
-      <div className="relative flex w-11/12 max-w-7xl bg-gray-800 shadow-lg rounded-xl overflow-hidden h-[400px] sm:h-[500px]">
-        {/* Left Side: Background Image Section */}
-        <div className="flex-[1.5] relative">
-          <div
-            className="w-full h-full bg-center bg-cover"
-            style={{ backgroundImage: `url(${bgimage})` }}
+    <div className="flex flex-col items-center w-full px-4 bg-black  ">
+      {/* Active Image Display */}
+      <motion.div
+        layoutId="activeItem"
+        className="rounded-md w-full max-w-3xl pb-4 gap-2 items-center cursor-auto"
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.figure
+            key={items[activeIndex].id}
+            className="dark:bg-gray-900/60 bg-gray-100/60 border rounded-md p-4 backdrop-blur-sm"
           >
-            <div className="absolute inset-0 bg-black/40"></div>
-            <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 text-left">
-              <h2 className="mb-4 text-2xl sm:text-3xl lg:text-4xl font-semibold text-white">EVENT</h2>
-              <p className="text-xs sm:text-sm lg:text-base leading-6 text-white">
-                DJHDHGCNCVXNXXXXXXXXXXXXXXX<br />
-                NNNNNNNNNNNNNNNNNNNHFGDXHFCH<br />
-                GJ,BV,CGHMGXCBXMJHGFJHKFCJKGFJ<br />
-                VBNBVXCVBNVCBNMBVCBNMBVCBNMBCV
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Carousel Section */}
-        <div className="flex-[1] flex items-center justify-center">
-          <div className="w-full h-full bg-white border border-gray-300 rounded-md">
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay, EffectCreative]} // Added EffectCreative
-              loop={true}
-              autoplay={{ delay: 3000 }}
-              navigation
-              pagination={{ clickable: true }}
-              effect="creative" // Set the effect to "creative"
-              creativeEffect={{
-                prev: {
-                  translate: ["-5%", 0, -100],
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: 1,
+                transition: {
+                  type: 'ease',
+                  ease: 'easeInOut',
+                  duration: 0.3,
+                  delay: 0.2,
                 },
-                next: {
-                  translate: ["5%", 0, -100],
-                },
-                shadow: true, // Enable shadow effect
-                limitProgress: 2, // Control the progress limit for animation
               }}
-              className="h-full w-[100%] sm:w-[500px] md:w-[525px] lg:w-[550px] xl:w-[600px]"
+              exit={{
+                opacity: 0,
+                transition: {
+                  type: 'ease',
+                  ease: 'easeInOut',
+                  duration: 0.2,
+                },
+              }}
             >
-              {slides.map((slide) => (
-                <SwiperSlide key={slide.id}>
-                  <div className="relative h-full bg-center bg-cover rounded-xl">
-                    <img
-                      src={slide.image}
-                      alt={slide.text}
-                      className="object-cover w-full h-full rounded-lg"
-                    />
-                    <div className="absolute text-white bottom-4 left-4">
-                      <h3 className="px-2 py-1 text-lg sm:text-xl font-bold rounded bg-black/60">
-                        {slide.text}
-                      </h3>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </div>
+              <img
+                src={items[activeIndex].url}
+                alt="preview_img"
+                className="w-full h-64 md:h-80 lg:h-96 object-cover mx-auto rounded-md"
+              />
+            </motion.div>
+          </motion.figure>
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Thumbnail Carousel */}
+      <motion.div className="w-full max-w-3xl mt-4 mx-auto overflow-hidden dark:bg-gray-900/60 bg-gray-100/60 border rounded-md">
+        <motion.div
+          ref={carousel}
+          drag="x"
+          dragElastic={0.2}
+          dragConstraints={{ right: 0, left: -width }}
+          dragTransition={{ bounceDamping: 30 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          className="flex overflow-x-auto space-x-2 p-2"
+        >
+          {items.map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="relative p-2 flex-shrink-0 cursor-pointer"
+              onClick={() => setActiveIndex(index)}
+            >
+              <img
+                src={item.url}
+                alt="thumbnail"
+                className={`w-24 h-14 md:w-28 md:h-16 object-cover rounded-md transition-transform ${
+                  index === activeIndex ? 'ring-2 ring-blue-500 scale-105' : ''
+                }`}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
     </div>
   );
-};
+}
 
-export default EventSection;
+export default FramerCarousel;

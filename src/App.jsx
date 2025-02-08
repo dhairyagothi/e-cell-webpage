@@ -1,10 +1,10 @@
 import React from 'react';
-import EventSlider from './EventSlider';
+import FramerCarousel from './EventSlider';
 
 function App() {
   return (
-    <div>
-      <EventSlider />
+    <div className='bg-black h-screen items-center justify-center flex'> 
+      <FramerCarousel />
     </div>
   );
 }
